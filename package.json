@@ -1,0 +1,14 @@
+{
+  "name": "autocomplete-snippets",
+  "main": "./lib/autocomplete-snippets",
+  "version": "0.0.0",
+  "description": "Add snippets to autocomplete+ suggestions",
+  "repository": "https://github.com/saschagehlich/autocomplete-snippets",
+  "license": "MIT",
+  "engines": {
+    "atom": ">0.50.0"
+  },
+  "dependencies": {
+    "underscore-plus": "~1.1.2"
+  }
+}
