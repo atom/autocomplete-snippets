@@ -1,23 +1,41 @@
 _ = require "underscore-plus"
+{ProviderPackageFactory} = require "autocomplete-plus"
+SnippetsProvider = require "./snippets-provider"
 
 module.exports =
-  autocompletes: []
   editorSubscription: null
-
-  activate: ->
-    @editorSubscription = atom.workspaceView.eachEditorView (editor) =>
-      if editor.attached and not editor.mini
-        autocomplete = new Autocomplete editor
-        editor.on "editor:will-be-removed", =>
-          autocomplete.dispose()
-          _.remove @autocompletes, autocomplete
-        @autocompletes.push autocomplete
+  providers: []
+  autocomplete: null
 
   ###
-   * Cleans everything up, removes all AutocompleteView instances
+   * Registers a SnippetProvider for each editor view
+  ###
+  activate: ->
+    atom.packages.activatePackage("autocomplete-plus")
+      .then (pkg) =>
+        @autocomplete = pkg.mainModule
+        @registerProviders()
+
+  ###
+   * Registers a SnippetProvider for each editor view
+  ###
+  registerProviders: ->
+    @editorSubscription = atom.workspaceView.eachEditorView (editorView) =>
+      if editorView.attached and not editorView.mini
+        provider = new SnippetsProvider editorView
+
+        @autocomplete.registerProviderForEditorView provider, editorView
+
+        @providers.push provider
+
+  ###
+   * Cleans everything up, unregisters all SnippetProvider instances
   ###
   deactivate: ->
     @editorSubscription?.off()
     @editorSubscription = null
-    @autocompletes.forEach (autocomplete) -> autocomplete.dispose()
-    @autocompletes = []
+
+    @providers.forEach (provider) =>
+      @autocomplete.unregisterProvider provider
+
+    @providers = []
