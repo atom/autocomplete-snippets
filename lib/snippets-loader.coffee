@@ -30,9 +30,10 @@ class SnippetsLoader
     grammar = atom.syntax.grammarForScopeName cursorScope
     grammarPath = grammar.path
 
-    packagePath = path.resolve grammarPath, "../.."
-    @loadSnippetsDirectory path.join(packagePath, "snippets"), =>
-      callback? @snippets
+    if grammarPath
+      packagePath = path.resolve grammarPath, "../.."
+      @loadSnippetsDirectory path.join(packagePath, "snippets"), =>
+        callback? @snippets
 
   loadSnippetsDirectory: (snippetsDirPath, callback) ->
     return callback?() unless fs.isDirectorySync(snippetsDirPath)
