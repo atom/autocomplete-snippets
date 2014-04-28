@@ -5,6 +5,7 @@ fs = require "fs-plus"
 
 module.exports =
 class SnippetsLoader
+  loaded: false
   constructor: (@editor) -> return
 
   getUserSnippetsPath: ->
@@ -14,7 +15,10 @@ class SnippetsLoader
   loadAll: (callback) ->
     @snippets = {}
     @loadUserSnippets =>
-      @loadSyntaxPackages callback
+      @loadSyntaxPackages =>
+        atom.packages.emit "autocomplete-snippets:loaded"
+        @loaded = true
+        callback? @snippets
 
   loadUserSnippets: (callback) ->
     @userSnippetsFile?.off()
@@ -26,13 +30,15 @@ class SnippetsLoader
         callback?()
 
   loadSyntaxPackages: (callback) ->
-    cursorScope = @editor.scopesForBufferPosition(@editor.getCursorBufferPosition())[0]
-    grammar = atom.syntax.grammarForScopeName cursorScope
+    grammar = @editor.getGrammar()
     grammarPath = grammar.path
 
-    packagePath = path.resolve grammarPath, "../.."
-    @loadSnippetsDirectory path.join(packagePath, "snippets"), =>
-      callback? @snippets
+    if grammarPath
+      packagePath = path.resolve grammarPath, "../.."
+      @loadSnippetsDirectory path.join(packagePath, "snippets"), =>
+        callback?()
+    else
+      callback?()
 
   loadSnippetsDirectory: (snippetsDirPath, callback) ->
     return callback?() unless fs.isDirectorySync(snippetsDirPath)

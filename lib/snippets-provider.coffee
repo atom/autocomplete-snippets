@@ -16,8 +16,6 @@ class SnippetsProvider extends Provider
         snippets.push val
       @snippets = snippets
 
-      return
-
   ###
    * Gets called when the document has been changed. Returns an array with
    * suggestions. If `exclusive` is set to true and this method returns suggestions,
@@ -77,6 +75,8 @@ class SnippetsProvider extends Provider
    * @private
   ###
   findSuggestionsForWord: (prefix) ->
+    return [] unless @snippets?
+
     snippetsByPrefixes = {}
     prefixes = _.values(@snippets).map (snippet) ->
       snippetsByPrefixes[snippet.prefix] = snippet
