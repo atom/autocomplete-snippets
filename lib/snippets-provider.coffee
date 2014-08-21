@@ -78,7 +78,7 @@ class SnippetsProvider extends Provider
     return [] unless @snippets?
 
     # Only accept snippets that start with prefix
-    matchesPrefix = (snippet) ->
+    matchesPrefix: (snippet) ->
       snippet.prefix.lastIndexOf(prefix, 0) isnt -1
 
     results = for snippet in @snippets when matchesPrefix(snippet)
