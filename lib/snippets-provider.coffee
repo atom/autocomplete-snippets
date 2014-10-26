@@ -6,15 +6,20 @@ SnippetsLoader = require "./snippets-loader"
 
 module.exports =
 class SnippetsProvider extends Provider
+  wordRegex: null
+
   initialize: ->
     @snippetsLoader = new SnippetsLoader @editor
+
     @snippetsLoader.loadAll (@snippets) =>
       # Turn snippet into array
       snippets = []
       for key, val of @snippets
         val.label = key
         snippets.push val
+
       @snippets = snippets
+      @wordRegex = @wordRegexForSnippets(@snippets)
 
   ###
    * Gets called when the document has been changed. Returns an array with
@@ -90,3 +95,11 @@ class SnippetsProvider extends Provider
       new Suggestion this, word: word, prefix: prefix, label: snippet.label
 
     return results
+
+  # Get a RegExp of all the characters used in the snippet prefixes
+  wordRegexForSnippets: (snippets) ->
+    prefixes = {}
+    for snippet in snippets
+      prefixes[character] = true for character in snippet.prefix
+    prefixCharacters = Object.keys(prefixes).join('')
+    new RegExp("[#{_.escapeRegExp(prefixCharacters)}]+")
