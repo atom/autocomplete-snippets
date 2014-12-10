@@ -79,8 +79,10 @@ class SnippetsProvider extends Provider
 
     snippetsByPrefixes = {}
     prefixes = _.values(@snippets).map (snippet) ->
-      snippetsByPrefixes[snippet.prefix] = snippet
-      return snippet.prefix
+      # Only accept snippets that start with prefix
+      if snippet.prefix.lastIndexOf(prefix, 0) isnt -1
+        snippetsByPrefixes[snippet.prefix] = snippet
+        return snippet.prefix
 
     # Merge the scope specific words into the default word list
     words = fuzzaldrin.filter prefixes, prefix
