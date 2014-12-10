@@ -6,7 +6,8 @@ fs = require "fs-plus"
 module.exports =
 class SnippetsLoader
   loaded: false
-  constructor: (@editor) -> return
+  constructor: (@editor) ->
+    @grammar = @editor.getGrammar()
 
   getUserSnippetsPath: ->
     userSnippetsPath = CSON.resolve path.join(atom.getConfigDirPath(), "snippets")
@@ -30,8 +31,7 @@ class SnippetsLoader
         callback?()
 
   loadSyntaxPackages: (callback) ->
-    grammar = @editor.getGrammar()
-    grammarPath = grammar.path
+    grammarPath = @grammar.path
 
     if grammarPath
       packagePath = path.resolve grammarPath, "../.."
@@ -62,6 +62,10 @@ class SnippetsLoader
 
   add: (filePath, snippetsBySelector) ->
     for selector, snippetsByName of snippetsBySelector
+      # Skip snippet if it's not in the same scope or the global scope
+      if selector.indexOf(@grammar.scopeName) is -1 and
+      selector.indexOf("*") is -1
+        continue
       for label, snippet of snippetsByName
         snippet.label = label
         @snippets[label] = snippet
