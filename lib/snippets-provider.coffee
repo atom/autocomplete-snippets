@@ -6,8 +6,10 @@ SnippetsLoader = require "./snippets-loader"
 
 module.exports =
 class SnippetsProvider extends Provider
-  initialize: ->
-    @snippetsLoader = new SnippetsLoader @editor
+  initialize: (editor) =>
+    @ready = false
+    @editor = editor
+    @snippetsLoader = new SnippetsLoader(@editor)
     @snippetsLoader.loadAll (@snippets) =>
       # Turn snippet into array
       snippets = []
@@ -15,6 +17,7 @@ class SnippetsProvider extends Provider
         val.label = key
         snippets.push val
       @snippets = snippets
+      @ready = true
 
   ###
    * Gets called when the document has been changed. Returns an array with
@@ -24,12 +27,13 @@ class SnippetsProvider extends Provider
    * @public
   ###
   buildSuggestions: ->
-    selection = @editor.getSelection()
-    prefix = @prefixOfSelection selection
+    return unless @ready
+    selection = @editor.getLastSelection()
+    prefix = @prefixOfSelection(selection)
 
     return unless prefix.length
 
-    suggestions = @findSuggestionsForWord prefix
+    suggestions = @findSuggestionsForWord(prefix)
 
     return unless suggestions.length
     return suggestions
@@ -43,9 +47,9 @@ class SnippetsProvider extends Provider
    * @public
   ###
   confirm: (suggestion) ->
-    @replaceTextWithMatch suggestion
+    @replaceTextWithMatch(suggestion)
     setTimeout(=>
-      @editorView.trigger "snippets:expand"
+      atom.commands.dispatch('snippets:expand')
     , 1)
     return false
 
@@ -61,12 +65,12 @@ class SnippetsProvider extends Provider
 
     # Replace the prefix with the new word
     cursorPosition = @editor.getCursorBufferPosition()
-    buffer.delete Range.fromPointWithDelta(cursorPosition, 0, -match.prefix.length)
-    @editor.insertText match.word
+    buffer.delete(Range.fromPointWithDelta(cursorPosition, 0, -match.prefix.length))
+    @editor.insertText(match.word)
 
     # Move the cursor behind the new word
     suffixLength = match.word.length - match.prefix.length
-    @editor.setSelectedBufferRange [startPosition, [startPosition.row, startPosition.column + suffixLength]]
+    @editor.setSelectedBufferRange([startPosition, [startPosition.row, startPosition.column + suffixLength]])
 
   ###
    * Finds possible matches for the given string / prefix
@@ -75,6 +79,8 @@ class SnippetsProvider extends Provider
    * @private
   ###
   findSuggestionsForWord: (prefix) ->
+    console.log 'suggestions'
+    console.log @snippets
     return [] unless @snippets?
 
     snippetsByPrefixes = {}
@@ -83,10 +89,10 @@ class SnippetsProvider extends Provider
       return snippet.prefix
 
     # Merge the scope specific words into the default word list
-    words = fuzzaldrin.filter prefixes, prefix
+    words = fuzzaldrin.filter(prefixes, prefix)
 
     results = for word in words
       snippet = snippetsByPrefixes[word]
-      new Suggestion this, word: word, prefix: prefix, label: snippet.label
+      new Suggestion(this, word: word, prefix: prefix, label: snippet.label)
 
     return results

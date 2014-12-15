@@ -6,7 +6,8 @@ fs = require "fs-plus"
 module.exports =
 class SnippetsLoader
   loaded: false
-  constructor: (@editor) -> return
+  constructor: (@editor) ->
+    return
 
   getUserSnippetsPath: ->
     userSnippetsPath = CSON.resolve path.join(atom.getConfigDirPath(), "snippets")

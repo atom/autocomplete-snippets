@@ -1,6 +1,6 @@
 # autocomplete+ snippet suggestions
 
-[View the changelog](https://github.com/saschagehlich/autocomplete-snippets/blob/master/CHANGELOG.md)
+[View the changelog](https://github.com/atom-community/autocomplete-snippets/blob/master/CHANGELOG.md)
 
 Adds snippets to autocomplete+ suggestions
 

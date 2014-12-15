@@ -3,17 +3,18 @@
   "main": "./lib/autocomplete-snippets",
   "version": "0.2.0",
   "description": "Adds snippets to autocomplete+ suggestions",
-  "repository": "https://github.com/saschagehlich/autocomplete-snippets",
+  "repository": "https://github.com/atom-community/autocomplete-snippets",
   "license": "MIT",
   "engines": {
     "atom": ">0.50.0"
   },
   "dependencies": {
-    "underscore-plus": "~1.1.2",
-    "autocomplete-plus": "git://github.com/saschagehlich/autocomplete-plus.git#feature/api",
-    "season": "~2.0.0",
     "async": "~0.7.0",
+    "autocomplete-plus": "git://github.com/atom-community/autocomplete-plus.git",
     "fs-plus": "~2.2.1",
-    "fuzzaldrin": "~1.0.0"
+    "fuzzaldrin": "~1.0.0",
+    "jquery": ">=2.0.0",
+    "season": "~2.0.0",
+    "underscore-plus": "~1.1.2"
   }
 }
