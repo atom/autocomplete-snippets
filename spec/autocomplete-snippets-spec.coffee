@@ -64,31 +64,29 @@ describe "AutocompleteSnippets", ->
 
   it "loads matched snippets in user snippets", ->
     runs ->
-      editorView = atom.workspaceView.getActiveView()
-      editorView.attachToDom()
-      editor = editorView.getEditor()
+      editor.moveToBottom()
 
-      expect(editorView.find(".autocomplete-plus")).not.toExist()
+      expect(editorView.querySelector(".autocomplete-plus")).not.toExist()
 
       editor.insertText "b"
       editor.insertText "f"
 
       advanceClock completionDelay + 1000
 
-      expect(editorView.find(".autocomplete-plus")).toExist()
-      expect(editorView.find(".autocomplete-plus span.word:eq(0)")).toHaveText "bf"
-      expect(editorView.find(".autocomplete-plus span.label:eq(0)")).toHaveText "BarFoo"
+      expect(editorView.querySelector(".autocomplete-plus")).toExist()
+      expect(editorView.querySelector(".autocomplete-plus span.word")).toHaveText "bf"
+      expect(editorView.querySelector(".autocomplete-plus span.label")).toHaveText "BarFoo"
 
       editor.insertText " "
-      expect(editorView.find(".autocomplete-plus")).not.toExist()
+      expect(editorView.querySelector(".autocomplete-plus")).not.toExist()
 
-      editor.moveCursorToBottom()
+      editor.moveToBottom()
       editor.insertText "f"
       editor.insertText "b"
 
       advanceClock completionDelay + 1000
 
-      expect(editorView.find(".autocomplete-plus")).not.toExist()
+      expect(editorView.querySelector(".autocomplete-plus")).not.toExist()
 
   # it "does not crash when typing an invalid folder", ->
   #   waitsForPromise ->
