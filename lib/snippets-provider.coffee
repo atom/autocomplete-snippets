@@ -75,20 +75,15 @@ class SnippetsProvider extends Provider
    * @private
   ###
   findSuggestionsForWord: (prefix) ->
-    console.log 'suggestions'
-    console.log @snippets
     return [] unless @snippets?
 
-    snippetsByPrefixes = {}
-    prefixes = _.values(@snippets).map (snippet) ->
-      snippetsByPrefixes[snippet.prefix] = snippet
-      return snippet.prefix
+    # Only accept snippets that start with prefix
+    matchesPrefix: (snippet) ->
+      snippet.prefix.lastIndexOf(prefix, 0) isnt -1
 
-    # Merge the scope specific words into the default word list
-    words = fuzzaldrin.filter(prefixes, prefix)
-
-    results = for word in words
-      snippet = snippetsByPrefixes[word]
-      new Suggestion(this, word: word, prefix: prefix, label: snippet.label)
+    results = for snippet in @snippets when matchesPrefix(snippet)
+      word = snippet.prefix
+      label = snippet.label
+      new Suggestion this, word: word, prefix: prefix, label: label
 
     return results
