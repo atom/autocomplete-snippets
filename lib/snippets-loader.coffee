@@ -62,7 +62,11 @@ class SnippetsLoader
 
   add: (filePath, snippetsBySelector) ->
     for selector, snippetsByName of snippetsBySelector
-      continue if selector.indexOf(@grammar.scopeName) < 0
+      # Skip snippet if it's not in the same scope or the global scope
+      if selector.indexOf(@grammar.scopeName) is -1 and
+      selector.indexOf("*") is -1
+        continue
+
       for label, snippet of snippetsByName
         snippet.label = label
         @snippets[label] = snippet
