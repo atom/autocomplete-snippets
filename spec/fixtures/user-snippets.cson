@@ -1,0 +1,9 @@
+'.source.coffee':
+  'FooBar':
+    'prefix': 'fb'
+    'body': 'foobar'
+
+'.source.js':
+  'BarFoo':
+    'prefix': 'bf'
+    'body': 'barfoo'

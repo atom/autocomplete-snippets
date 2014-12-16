@@ -7,7 +7,7 @@ module.exports =
 class SnippetsLoader
   loaded: false
   constructor: (@editor) ->
-    return
+    @grammar = @editor.getGrammar()
 
   getUserSnippetsPath: ->
     userSnippetsPath = CSON.resolve path.join(atom.getConfigDirPath(), "snippets")
@@ -31,8 +31,7 @@ class SnippetsLoader
         callback?()
 
   loadSyntaxPackages: (callback) ->
-    grammar = @editor.getGrammar()
-    grammarPath = grammar.path
+    grammarPath = @grammar.path
 
     if grammarPath
       packagePath = path.resolve grammarPath, "../.."
@@ -63,6 +62,7 @@ class SnippetsLoader
 
   add: (filePath, snippetsBySelector) ->
     for selector, snippetsByName of snippetsBySelector
+      continue if selector.indexOf(@grammar.scopeName) < 0
       for label, snippet of snippetsByName
         snippet.label = label
         @snippets[label] = snippet
