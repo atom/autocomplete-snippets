@@ -49,7 +49,7 @@ class SnippetsProvider extends Provider
   confirm: (suggestion) ->
     @replaceTextWithMatch(suggestion)
     setTimeout(=>
-      atom.commands.dispatch('snippets:expand')
+      atom.commands.dispatch(atom.views.getView(@editor), 'snippets:expand')
     , 1)
     return false
 
@@ -67,10 +67,6 @@ class SnippetsProvider extends Provider
     cursorPosition = @editor.getCursorBufferPosition()
     buffer.delete(Range.fromPointWithDelta(cursorPosition, 0, -match.prefix.length))
     @editor.insertText(match.word)
-
-    # Move the cursor behind the new word
-    suffixLength = match.word.length - match.prefix.length
-    @editor.setSelectedBufferRange([startPosition, [startPosition.row, startPosition.column + suffixLength]])
 
   ###
    * Finds possible matches for the given string / prefix
