@@ -1,7 +1,7 @@
 {
   "name": "autocomplete-snippets",
   "main": "./lib/autocomplete-snippets",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Adds snippets to autocomplete+ suggestions",
   "repository": "https://github.com/atom-community/autocomplete-snippets",
   "license": "MIT",
