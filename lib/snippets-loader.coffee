@@ -1,7 +1,7 @@
-CSON = require "season"
-async = require "async"
-path = require "path"
-fs = require "fs-plus"
+CSON = require('season')
+async = require('async')
+path = require('path')
+fs = require('fs-plus')
 
 module.exports =
 class SnippetsLoader
@@ -10,23 +10,23 @@ class SnippetsLoader
     @grammar = @editor.getGrammar()
 
   getUserSnippetsPath: ->
-    userSnippetsPath = CSON.resolve path.join(atom.getConfigDirPath(), "snippets")
-    userSnippetsPath ? path.join atom.getConfigDirPath(), "snippets.cson"
+    userSnippetsPath = CSON.resolve(path.join(atom.getConfigDirPath(), 'snippets'))
+    userSnippetsPath ? path.join(atom.getConfigDirPath(), 'snippets.cson')
 
   loadAll: (callback) ->
     @snippets = {}
     @loadUserSnippets =>
       @loadSyntaxPackages =>
-        atom.packages.emit "autocomplete-snippets:loaded"
+        atom.packages.emit('autocomplete-snippets:loaded')
         @loaded = true
-        callback? @snippets
+        callback?(@snippets)
 
   loadUserSnippets: (callback) ->
     @userSnippetsFile?.off()
     userSnippetsPath = @getUserSnippetsPath()
     fs.stat userSnippetsPath, (error, stat) =>
       if stat?.isFile()
-        @loadSnippetsFile userSnippetsPath, callback
+        @loadSnippetsFile(userSnippetsPath, callback)
       else
         callback?()
 
@@ -34,9 +34,8 @@ class SnippetsLoader
     grammarPath = @grammar.path
 
     if grammarPath
-      packagePath = path.resolve grammarPath, "../.."
-      @loadSnippetsDirectory path.join(packagePath, "snippets"), =>
-        callback?()
+      packagePath = path.resolve(grammarPath, '..' + path.sep + '..')
+      @loadSnippetsDirectory(path.join(packagePath, 'snippets'), => callback?())
     else
       callback?()
 
@@ -48,8 +47,8 @@ class SnippetsLoader
         console.warn(error)
         callback?()
       else
-        paths = entries.map (file) -> path.join snippetsDirPath, file
-        async.eachSeries paths, @loadSnippetsFile.bind(this), => callback?()
+        paths = entries.map((file) -> path.join snippetsDirPath, file)
+        async.eachSeries(paths, @loadSnippetsFile.bind(this), => callback?())
 
   loadSnippetsFile: (filePath, callback) ->
     return callback?() unless CSON.isObjectPath(filePath)
@@ -64,7 +63,7 @@ class SnippetsLoader
     for selector, snippetsByName of snippetsBySelector
       # Skip snippet if it's not in the same scope or the global scope
       if selector.indexOf(@grammar.scopeName) is -1 and
-      selector.indexOf("*") is -1
+      selector.indexOf('*') is -1
         continue
 
       for label, snippet of snippetsByName

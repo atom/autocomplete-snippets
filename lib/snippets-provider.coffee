@@ -1,8 +1,8 @@
-{Range}  = require "atom"
-{Provider, Suggestion} = require "autocomplete-plus"
-fuzzaldrin = require "fuzzaldrin"
-_ = require "underscore-plus"
-SnippetsLoader = require "./snippets-loader"
+{Range}  = require('atom')
+{Provider, Suggestion} = require('autocomplete-plus')
+fuzzaldrin = require('fuzzaldrin')
+_ = require('underscore-plus')
+SnippetsLoader = require('./snippets-loader')
 
 module.exports =
 class SnippetsProvider extends Provider
@@ -15,7 +15,7 @@ class SnippetsProvider extends Provider
       snippets = []
       for key, val of @snippets
         val.label = key
-        snippets.push val
+        snippets.push(val)
       @snippets = snippets
       @ready = true
 
@@ -84,6 +84,6 @@ class SnippetsProvider extends Provider
     results = for snippet in @snippets when matchesPrefix(snippet)
       word = snippet.prefix
       label = snippet.label
-      new Suggestion this, word: word, prefix: prefix, label: label
+      new Suggestion(this, word: word, prefix: prefix, label: label)
 
     return results
