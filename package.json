@@ -10,11 +10,8 @@
   },
   "dependencies": {
     "async": "~0.7.0",
-    "autocomplete-plus": "git://github.com/atom-community/autocomplete-plus.git",
     "fs-plus": "~2.2.1",
     "fuzzaldrin": "~1.0.0",
-    "jquery": ">=2.0.0",
-    "season": "~2.0.0",
-    "underscore-plus": "~1.1.2"
+    "season": "~2.0.0"
   }
 }

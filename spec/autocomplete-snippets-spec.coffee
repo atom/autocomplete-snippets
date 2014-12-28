@@ -1,4 +1,3 @@
-$ = require('jquery')
 SnippetsLoader = require('../lib/snippets-loader')
 path = require('path')
 
