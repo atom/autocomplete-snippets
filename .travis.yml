@@ -1,0 +1,18 @@
+language: objective-c
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/4d66d4b62e6492c849e2
+    on_success: change
+    on_failure: always
+    on_start: false
+
+script:
+  - ./build-package-travis.sh
+
+git:
+  depth: 10
