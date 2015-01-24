@@ -1,6 +1,5 @@
 {Range}  = require('atom')
 fuzzaldrin = require('fuzzaldrin')
-SnippetsLoader = require('./snippets-loader')
 
 module.exports =
 ProviderClass: (Provider, Suggestion)  ->
@@ -8,15 +7,13 @@ ProviderClass: (Provider, Suggestion)  ->
     initialize: (editor) =>
       @ready = false
       @editor = editor
-      @snippetsLoader = new SnippetsLoader(@editor)
-      @snippetsLoader.loadAll (@snippets) =>
-        # Turn snippet into array
-        snippets = []
-        for key, val of @snippets
-          val.label = key
-          snippets.push(val)
-        @snippets = snippets
-        @ready = true
+      @snippets = atom.config.get 'snippets', scope: @editor.getLastCursor().getScopeDescriptor()
+      snippets = []
+      for key, val of @snippets
+        val.label = key
+        snippets.push(val)
+      @snippets = snippets
+      @ready = true
 
     ###
      * Gets called when the document has been changed. Returns an array with
@@ -82,7 +79,7 @@ ProviderClass: (Provider, Suggestion)  ->
 
       results = for snippet in @snippets when matchesPrefix(snippet)
         word = snippet.prefix
-        label = snippet.label
+        label = snippet.name
         new Suggestion(this, word: word, prefix: prefix, label: label)
 
       return results
