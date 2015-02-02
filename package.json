@@ -13,5 +13,8 @@
     "fs-plus": "~2.2.1",
     "fuzzaldrin": "~1.0.0",
     "season": "~2.0.0"
+  },
+  "devDependencies": {
+    "coffeelint": ">=1.8.1"
   }
 }

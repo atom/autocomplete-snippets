@@ -1,6 +1,6 @@
 path = require('path')
 
-describe "AutocompleteSnippets", ->
+describe 'AutocompleteSnippets', ->
   [workspaceElement, completionDelay, editor, editorView, autocompleteManager, didAutocomplete] = []
 
   beforeEach ->
@@ -22,18 +22,20 @@ describe "AutocompleteSnippets", ->
       workspaceElement = atom.views.getView(atom.workspace)
       jasmine.attachToDOM(workspaceElement)
 
-    waitsForPromise -> atom.packages.activatePackage('language-javascript')
+    waitsForPromise ->
+      atom.packages.activatePackage('language-javascript')
 
     waitsForPromise -> atom.packages.activatePackage('autocomplete-plus').then (a) ->
       autocompleteManager = a.mainModule.autocompleteManager
       spyOn(autocompleteManager, 'runAutocompletion').andCallThrough();
-      spyOn(autocompleteManager, 'showSuggestions').andCallThrough();
-      spyOn(autocompleteManager, 'showSuggestionList').andCallThrough();
-      spyOn(autocompleteManager, 'hideSuggestionList').andCallThrough();
+      spyOn(autocompleteManager, 'showSuggestions').andCallThrough()
+      spyOn(autocompleteManager, 'showSuggestionList').andCallThrough()
+      spyOn(autocompleteManager, 'hideSuggestionList').andCallThrough()
       autocompleteManager.onDidAutocomplete ->
         didAutocomplete = true
 
-    waitsForPromise -> atom.packages.activatePackage("autocomplete-snippets")
+    waitsForPromise ->
+      atom.packages.activatePackage('autocomplete-snippets')
 
   afterEach ->
     didAutocomplete = false
@@ -45,19 +47,20 @@ describe "AutocompleteSnippets", ->
   activateSnippetsPackage = ->
     module = null
 
-    runs -> module = null
+    runs ->
+      module = null
 
     waitsForPromise ->
-      atom.packages.activatePackage("snippets").then ({mainModule}) ->
+      atom.packages.activatePackage('snippets').then ({mainModule}) ->
         module = mainModule
         module.loaded = false
 
-    waitsFor "all snippets to load", 3000, ->
+    waitsFor 'all snippets to load', 3000, ->
       module.loaded
 
-  describe "when autocomplete-plus is enabled", ->
+  describe 'when autocomplete-plus is enabled', ->
 
-    it "shows autocompletions when there are snippets available", ->
+    it 'shows autocompletions when there are snippets available', ->
       activateSnippetsPackage()
 
       runs ->
@@ -78,7 +81,7 @@ describe "AutocompleteSnippets", ->
         expect(editorView.querySelector('.autocomplete-plus span.label')).toHaveText('do')
 
     # TODO: This test makes no sense - how does it test user snippet loading? Doesn't look like it does...
-    it "loads matched snippets in user snippets", ->
+    it 'loads matched snippets in user snippets', ->
       activateSnippetsPackage()
 
       runs ->
