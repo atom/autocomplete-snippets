@@ -27,7 +27,7 @@ describe 'AutocompleteSnippets', ->
 
     waitsForPromise -> atom.packages.activatePackage('autocomplete-plus').then (a) ->
       autocompleteManager = a.mainModule.autocompleteManager
-      spyOn(autocompleteManager, 'runAutocompletion').andCallThrough();
+      spyOn(autocompleteManager, 'runAutocompletion').andCallThrough()
       spyOn(autocompleteManager, 'showSuggestions').andCallThrough()
       spyOn(autocompleteManager, 'showSuggestionList').andCallThrough()
       spyOn(autocompleteManager, 'hideSuggestionList').andCallThrough()
