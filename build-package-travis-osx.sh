@@ -24,7 +24,7 @@ echo "Downloading package dependencies..."
 atom/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm clean
 atom/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm install
 
-if [ -f ./node_modules/.bin/coffeelint ];
+if [ -f ./node_modules/.bin/coffeelint ]; then
   echo "Linting package..."
   ./node_modules/.bin/coffeelint lib spec
   rc=$?; if [[ $rc != 0 ]]; then exit $rc; fi
