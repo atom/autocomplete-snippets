@@ -20,6 +20,7 @@ echo "Installing required packages..."
 atom/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm install autocomplete-plus
 
 echo "Downloading package dependencies..."
+atom/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm clean
 atom/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm install
 
 echo "Linting package..."

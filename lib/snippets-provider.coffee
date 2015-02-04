@@ -15,7 +15,6 @@ class SnippetsProvider
       snippets.push(val)
 
     suggestions = @findSuggestionsForWord(snippets, options.prefix)
-
     return unless suggestions?.length
     return suggestions
 

@@ -1,14 +1,18 @@
 module.exports =
-  registration: null
-  snippetsProvider: null
+  provider: null
+  ready: false
 
   activate: ->
-    SnippetsProvider = require('./snippets-provider')
-    @snippetsProvider = new SnippetsProvider()
-    @registration = atom.services.provide('autocomplete.provider', '1.0.0', {provider: @snippetsProvider})
+    @ready = true
 
   deactivate: ->
-    @registration?.dispose()
-    @registration = null
-    @snippetsProvider?.dispose()
-    @snippetsProvider = null
+    @provider = null
+
+  getProvider: ->
+    return @provider if @provider?
+    SnippetsProvider = require('./snippets-provider')
+    @provider = new SnippetsProvider()
+    return @provider
+
+  provide: ->
+    return {provider: @getProvider()}
