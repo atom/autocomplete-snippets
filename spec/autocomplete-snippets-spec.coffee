@@ -1,17 +1,18 @@
 path = require('path')
 
 describe 'AutocompleteSnippets', ->
-  [workspaceElement, completionDelay, editor, editorView, snippetsMain, autocompleteMain, autocompleteManager, didAutocomplete] = []
+  [workspaceElement, completionDelay, editor, editorView, snippetsMain, autocompleteMain, autocompleteManager] = []
 
   beforeEach ->
     runs ->
-      didAutocomplete = false
       # Set to live completion
       atom.config.set('autocomplete-plus.enableAutoActivation', true)
       # Set the completion delay
       completionDelay = 100
       atom.config.set('autocomplete-plus.autoActivationDelay', completionDelay)
       completionDelay += 100 # Rendering delay
+      workspaceElement = atom.views.getView(atom.workspace)
+      jasmine.attachToDOM(workspaceElement)
       autocompleteMain = atom.packages.loadPackage('autocomplete-plus').mainModule
       spyOn(autocompleteMain, 'consumeProvider').andCallThrough()
       snippetsMain = atom.packages.loadPackage('autocomplete-snippets').mainModule
@@ -21,10 +22,6 @@ describe 'AutocompleteSnippets', ->
       atom.workspace.open('sample.js').then (e) ->
         editor = e
         editorView = atom.views.getView(editor)
-
-    runs ->
-      workspaceElement = atom.views.getView(atom.workspace)
-      jasmine.attachToDOM(workspaceElement)
 
     waitsForPromise ->
       atom.packages.activatePackage('language-javascript')
@@ -85,7 +82,7 @@ describe 'AutocompleteSnippets', ->
         editor.insertText('d')
         editor.insertText('o')
 
-        advanceClock(completionDelay + 1000)
+        advanceClock(completionDelay)
 
       waitsFor ->
         autocompleteManager.displaySuggestions.calls.length is 1
@@ -106,7 +103,7 @@ describe 'AutocompleteSnippets', ->
         editor.insertText('d')
         editor.insertText('o')
 
-        advanceClock(completionDelay + 1000)
+        advanceClock(completionDelay)
 
       waitsFor ->
         autocompleteManager.displaySuggestions.calls.length is 1
@@ -116,7 +113,7 @@ describe 'AutocompleteSnippets', ->
         expect(editorView.querySelector('.autocomplete-plus span.word')).toHaveText('do')
         expect(editorView.querySelector('.autocomplete-plus span.completion-label')).toHaveText('do')
         editor.insertText(' ')
-        advanceClock(completionDelay + 1000)
+        advanceClock(completionDelay)
 
       runs ->
         expect(editorView.querySelector('.autocomplete-plus')).not.toExist()
@@ -124,7 +121,7 @@ describe 'AutocompleteSnippets', ->
         editor.moveToBottom()
         editor.insertText('f')
         editor.insertText('b')
-        advanceClock(completionDelay + 1000)
+        advanceClock(completionDelay)
 
       waitsFor ->
         autocompleteManager.findSuggestions.calls.length is 2
