@@ -1,7 +1,5 @@
-path = require('path')
-
 describe 'AutocompleteSnippets', ->
-  [workspaceElement, completionDelay, editor, editorView, snippetsMain, autocompleteMain, autocompleteManager] = []
+  [completionDelay, editor, editorView, snippetsMain, autocompleteMain, autocompleteManager] = []
 
   beforeEach ->
     runs ->
@@ -13,6 +11,7 @@ describe 'AutocompleteSnippets', ->
       completionDelay += 100 # Rendering delay
       workspaceElement = atom.views.getView(atom.workspace)
       jasmine.attachToDOM(workspaceElement)
+
       autocompleteMain = atom.packages.loadPackage('autocomplete-plus').mainModule
       spyOn(autocompleteMain, 'consumeProvider').andCallThrough()
       snippetsMain = atom.packages.loadPackage('autocomplete-snippets').mainModule
