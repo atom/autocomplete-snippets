@@ -8,10 +8,9 @@ module.exports =
   deactivate: ->
     @provider = null
 
-  getProvider: ->
-    return @provider if @provider?
-    SnippetsProvider = require('./snippets-provider')
-    @provider = new SnippetsProvider()
-
   provide: ->
-    {provider: @getProvider()}
+    unless @provider?
+      SnippetsProvider = require('./snippets-provider')
+      @provider = new SnippetsProvider()
+
+    {@provider}
