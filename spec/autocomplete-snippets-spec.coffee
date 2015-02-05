@@ -23,41 +23,24 @@ describe 'AutocompleteSnippets', ->
         editorView = atom.views.getView(editor)
 
     waitsForPromise ->
-      atom.packages.activatePackage('language-javascript')
-
-    waitsForPromise ->
-      atom.packages.activatePackage('autocomplete-plus')
+      Promise.all [
+        atom.packages.activatePackage('language-javascript')
+        atom.packages.activatePackage('autocomplete-plus')
+        atom.packages.activatePackage('autocomplete-snippets')
+      ]
 
     waitsFor ->
-      autocompleteMain.autocompleteManager?.ready
+      autocompleteMain.autocompleteManager?.ready and
+        snippetsMain.provide.calls.length is 1 and
+        autocompleteMain.consumeProvider.calls.length is 1
 
     runs ->
       autocompleteManager = autocompleteMain.autocompleteManager
       spyOn(autocompleteManager, 'findSuggestions').andCallThrough()
       spyOn(autocompleteManager, 'displaySuggestions').andCallThrough()
-      spyOn(autocompleteManager, 'showSuggestionList').andCallThrough()
-      spyOn(autocompleteManager, 'hideSuggestionList').andCallThrough()
-
-    waitsForPromise ->
-      atom.packages.activatePackage('autocomplete-snippets')
-
-    waitsFor ->
-      snippetsMain.provide.calls.length is 1
-
-    waitsFor ->
-      autocompleteMain.consumeProvider.calls.length is 1
-
-  afterEach ->
-    jasmine.unspy(autocompleteMain, 'consumeProvider')
-    jasmine.unspy(snippetsMain, 'provide')
-    jasmine.unspy(autocompleteManager, 'findSuggestions')
-    jasmine.unspy(autocompleteManager, 'displaySuggestions')
-    jasmine.unspy(autocompleteManager, 'showSuggestionList')
-    jasmine.unspy(autocompleteManager, 'hideSuggestionList')
 
   activateSnippetsPackage = ->
     module = null
-
     runs ->
       module = null
 
@@ -70,7 +53,6 @@ describe 'AutocompleteSnippets', ->
       module.loaded
 
   describe 'when autocomplete-plus is enabled', ->
-
     it 'shows autocompletions when there are snippets available', ->
       activateSnippetsPackage()
 
