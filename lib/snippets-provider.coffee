@@ -9,24 +9,16 @@ class SnippetsProvider
   requestHandler: ({cursor, prefix}) ->
     return unless prefix?.length
     scopeSnippets = atom.config.get('snippets', {scope: cursor.getScopeDescriptor()})
-    snippets = []
-    for key, val of scopeSnippets
-      val.label = key
-      snippets.push(val)
-
-    @findSuggestionsForPrefix(snippets, prefix)
+    @findSuggestionsForPrefix(scopeSnippets, prefix)
 
   findSuggestionsForPrefix: (snippets, prefix) ->
-    return [] unless snippets? and prefix?
+    return [] unless snippets?
 
-    # Only accept snippets that start with prefix
-    matchesPrefix = (snippet) ->
-      snippet.prefix.lastIndexOf(prefix, 0) isnt -1
-
-    for snippet in snippets when matchesPrefix(snippet)
-      suggestion =
+    for __, snippet of snippets when snippet.prefix.lastIndexOf(prefix, 0) isnt -1
+      {
         snippet: snippet
         word: snippet.prefix
         prefix: prefix
         label: snippet.name
         isSnippet: true
+      }
