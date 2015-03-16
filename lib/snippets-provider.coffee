@@ -3,12 +3,11 @@ fuzzaldrin = require('fuzzaldrin')
 
 module.exports =
 class SnippetsProvider
-  id: 'autocomplete-snippets-snippetsprovider'
   selector: '*'
 
-  requestHandler: ({cursor, prefix}) ->
+  getSuggestions: ({scopeDescriptor, prefix}) ->
     return unless prefix?.length
-    scopeSnippets = atom.config.get('snippets', {scope: cursor.getScopeDescriptor()})
+    scopeSnippets = atom.config.get('snippets', {scope: scopeDescriptor})
     @findSuggestionsForPrefix(scopeSnippets, prefix)
 
   findSuggestionsForPrefix: (snippets, prefix) ->

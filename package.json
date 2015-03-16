@@ -6,7 +6,7 @@
   "repository": "https://github.com/atom-community/autocomplete-snippets",
   "license": "MIT",
   "engines": {
-    "atom": ">0.50.0"
+    "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
     "async": "~0.7.0",
@@ -20,7 +20,7 @@
   "providedServices": {
     "autocomplete.provider": {
       "versions": {
-        "1.0.0": "provide"
+        "2.0.0": "provide"
       }
     }
   }

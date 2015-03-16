@@ -1,9 +1,7 @@
 module.exports =
   provider: null
-  ready: false
 
   activate: ->
-    @ready = true
 
   deactivate: ->
     @provider = null
@@ -13,4 +11,4 @@ module.exports =
       SnippetsProvider = require('./snippets-provider')
       @provider = new SnippetsProvider()
 
-    {@provider}
+    @provider
