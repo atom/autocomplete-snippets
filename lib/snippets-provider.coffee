@@ -16,8 +16,8 @@ class SnippetsProvider
     for __, snippet of snippets when snippet.prefix.lastIndexOf(prefix, 0) isnt -1
       {
         snippet: snippet
-        word: snippet.prefix
-        prefix: prefix
-        label: snippet.name
         isSnippet: true
+        text: snippet.prefix
+        replacementPrefix: prefix
+        rightLabel: snippet.name
       }
