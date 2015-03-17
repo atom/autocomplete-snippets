@@ -14,11 +14,9 @@ class SnippetsProvider
     return [] unless snippets?
 
     for __, snippet of snippets when snippet.prefix.lastIndexOf(prefix, 0) isnt -1
-      {
-        text: snippet.prefix
-        replacementPrefix: prefix
-        rightLabel: snippet.name
-      }
+      text: snippet.prefix
+      replacementPrefix: prefix
+      rightLabel: snippet.name
 
   onDidInsertSuggestion: ({editor}) ->
     atom.commands.dispatch(atom.views.getView(editor), 'snippets:expand')
