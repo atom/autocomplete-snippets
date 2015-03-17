@@ -73,6 +73,28 @@ describe 'AutocompleteSnippets', ->
         expect(editorView.querySelector('.autocomplete-plus span.word')).toHaveText('do')
         expect(editorView.querySelector('.autocomplete-plus span.completion-label')).toHaveText('do')
 
+    it "expands the snippet on confirm", ->
+      activateSnippetsPackage()
+
+      runs ->
+        expect(editorView.querySelector('.autocomplete-plus')).not.toExist()
+
+        editor.moveToBottom()
+        editor.insertText('d')
+        editor.insertText('o')
+
+        advanceClock(completionDelay)
+
+      waitsFor ->
+        autocompleteManager.displaySuggestions.calls.length is 1
+
+      runs ->
+        expect(editorView.querySelector('.autocomplete-plus')).toExist()
+
+      runs ->
+        atom.commands.dispatch(editorView, 'autocomplete-plus:confirm')
+        expect(editor.getText()).toContain '} while (true);'
+
     # TODO: This test makes no sense - how does it test user snippet loading? Doesn't look like it does...
     it 'loads matched snippets in user snippets', ->
       activateSnippetsPackage()
