@@ -14,7 +14,7 @@ class SnippetsProvider
     return [] unless snippets?
 
     for __, snippet of snippets when snippet.prefix.lastIndexOf(prefix, 0) isnt -1
-      icon: '<i class="icon-move-right"></i>'
+      iconHTML: '<i class="icon-move-right"></i>'
       type: 'snippet'
       text: snippet.prefix
       replacementPrefix: prefix
