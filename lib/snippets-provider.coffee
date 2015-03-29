@@ -5,6 +5,10 @@ module.exports =
 class SnippetsProvider
   selector: '*'
 
+  constructor: ->
+    if atom.config.get('autocomplete-snippets.highInclusionPriority')
+      @inclusionPriority = 9999
+
   getSuggestions: ({scopeDescriptor, prefix}) ->
     return unless prefix?.length
     scopeSnippets = atom.config.get('snippets', {scope: scopeDescriptor})
