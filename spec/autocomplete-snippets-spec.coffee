@@ -71,7 +71,7 @@ describe 'AutocompleteSnippets', ->
       runs ->
         expect(editorView.querySelector('.autocomplete-plus')).toExist()
         expect(editorView.querySelector('.autocomplete-plus span.word')).toHaveText('do')
-        expect(editorView.querySelector('.autocomplete-plus span.completion-label')).toHaveText('do')
+        expect(editorView.querySelector('.autocomplete-plus span.right-label')).toHaveText('do')
 
     it "expands the snippet on confirm", ->
       activateSnippetsPackage()
