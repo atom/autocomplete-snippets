@@ -22,6 +22,8 @@ class SnippetsProvider
       text: snippet.prefix
       replacementPrefix: prefix
       rightLabel: snippet.name
+      description: snippet.description
+      descriptionMoreURL: snippet.descriptionMoreURL
 
   onDidInsertSuggestion: ({editor}) ->
     atom.commands.dispatch(atom.views.getView(editor), 'snippets:expand')
