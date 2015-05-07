@@ -4,6 +4,7 @@ fuzzaldrin = require('fuzzaldrin')
 module.exports =
 class SnippetsProvider
   selector: '*'
+  filterSuggestions: true
 
   constructor: ->
     @showIcon = atom.config.get('autocomplete-plus.defaultProvider') is 'Symbol'
@@ -16,14 +17,24 @@ class SnippetsProvider
   findSuggestionsForPrefix: (snippets, prefix) ->
     return [] unless snippets?
 
-    for __, snippet of snippets when snippet.prefix.lastIndexOf(prefix, 0) isnt -1
-      iconHTML: if @showIcon then undefined else false
-      type: 'snippet'
-      text: snippet.prefix
-      replacementPrefix: prefix
-      rightLabel: snippet.name
-      description: snippet.description
-      descriptionMoreURL: snippet.descriptionMoreURL
+    suggestions = []
+    for __, snippet of snippets when firstCharsEqual(snippet.prefix, prefix)
+      suggestions.push
+        iconHTML: if @showIcon then undefined else false
+        type: 'snippet'
+        text: snippet.prefix
+        replacementPrefix: prefix
+        rightLabel: snippet.name
+        description: snippet.description
+        descriptionMoreURL: snippet.descriptionMoreURL
+
+    suggestions.sort(ascendingPrefixComparator)
+    suggestions
 
   onDidInsertSuggestion: ({editor}) ->
     atom.commands.dispatch(atom.views.getView(editor), 'snippets:expand')
+
+ascendingPrefixComparator = (a, b) ->a.prefix  - b.prefix
+
+firstCharsEqual = (str1, str2) ->
+  str1[0].toLowerCase() is str2[0].toLowerCase()
