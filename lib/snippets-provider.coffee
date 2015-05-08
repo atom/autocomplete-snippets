@@ -4,6 +4,7 @@ fuzzaldrin = require('fuzzaldrin')
 module.exports =
 class SnippetsProvider
   selector: '*'
+  disableForSelector: '.comment'
   inclusionPriority: 1
   suggestionPriority: 2
 
