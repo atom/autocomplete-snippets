@@ -4,6 +4,9 @@ fuzzaldrin = require('fuzzaldrin')
 module.exports =
 class SnippetsProvider
   selector: '*'
+  inclusionPriority: 1
+  suggestionPriority: 2
+
   filterSuggestions: true
 
   constructor: ->
