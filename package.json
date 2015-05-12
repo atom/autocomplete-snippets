@@ -3,7 +3,7 @@
   "main": "./lib/autocomplete-snippets",
   "version": "1.5.1",
   "description": "Adds snippets to autocomplete+ suggestions",
-  "repository": "https://github.com/atom-community/autocomplete-snippets",
+  "repository": "https://github.com/atom/autocomplete-snippets",
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
