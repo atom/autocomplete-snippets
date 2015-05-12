@@ -1,5 +1,4 @@
 {Range}  = require('atom')
-fuzzaldrin = require('fuzzaldrin')
 
 module.exports =
 class SnippetsProvider

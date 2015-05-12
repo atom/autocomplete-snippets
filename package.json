@@ -9,10 +9,6 @@
     "atom": ">=0.174.0 <2.0.0"
   },
   "dependencies": {
-    "async": "~0.7.0",
-    "fs-plus": "~2.2.1",
-    "fuzzaldrin": "~1.0.0",
-    "season": "~2.0.0"
   },
   "devDependencies": {
     "coffeelint": ">=1.8.1"
