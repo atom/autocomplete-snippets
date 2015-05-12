@@ -1,15 +1,14 @@
 {
   "name": "autocomplete-snippets",
   "main": "./lib/autocomplete-snippets",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Adds snippets to autocomplete+ suggestions",
   "repository": "https://github.com/atom/autocomplete-snippets",
   "license": "MIT",
   "engines": {
     "atom": ">=0.174.0 <2.0.0"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "coffeelint": ">=1.8.1"
   },
