@@ -22,6 +22,7 @@ class SnippetsProvider
 
     suggestions = []
     for __, snippet of snippets when firstCharsEqual(snippet.prefix, prefix)
+      continue unless snippet
       suggestions.push
         iconHTML: if @showIcon then undefined else false
         type: 'snippet'
