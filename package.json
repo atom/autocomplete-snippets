@@ -10,7 +10,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "coffeelint": ">=1.8.1"
+    "coffeelint": "^1.9.7"
   },
   "providedServices": {
     "autocomplete.provider": {
