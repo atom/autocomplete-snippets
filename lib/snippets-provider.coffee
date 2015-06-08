@@ -1,5 +1,3 @@
-{Range}  = require('atom')
-
 module.exports =
 class SnippetsProvider
   selector: '*'
