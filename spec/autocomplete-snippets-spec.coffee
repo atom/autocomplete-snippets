@@ -60,7 +60,7 @@ describe 'AutocompleteSnippets', ->
         expect(editorView.querySelector('.autocomplete-plus')).not.toExist()
 
         editor.moveToBottom()
-        editor.insertText('d')
+        editor.insertText('D')
         editor.insertText('o')
 
         advanceClock(completionDelay)
@@ -80,7 +80,7 @@ describe 'AutocompleteSnippets', ->
         expect(editorView.querySelector('.autocomplete-plus')).not.toExist()
 
         editor.moveToBottom()
-        editor.insertText('d')
+        editor.insertText('D')
         editor.insertText('o')
 
         advanceClock(completionDelay)
