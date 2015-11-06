@@ -10,9 +10,12 @@ class SnippetsProvider
   constructor: ->
     @showIcon = atom.config.get('autocomplete-plus.defaultProvider') is 'Symbol'
     @snippetsSource =
-      snippetsForScopes: -> {}
+      snippetsForScopes: (scopeDescriptor) ->
+        atom.config.get('snippets', {scope: scopeDescriptor})
 
-  setSnippetsSource: (@snippetsSource) ->
+  setSnippetsSource: (snippetsSource) ->
+    if typeof snippetsSource?.snippetsForScopes is "function"
+      @snippetsSource = snippetsSource
 
   getSuggestions: ({scopeDescriptor, prefix}) ->
     return unless prefix?.length
