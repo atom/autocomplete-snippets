@@ -18,5 +18,12 @@
         "2.0.0": "provide"
       }
     }
+  },
+  "consumedServices": {
+    "snippets": {
+      "versions": {
+        "0.1.0": "consumeSnippets"
+      }
+    }
   }
 }
