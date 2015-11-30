@@ -1,61 +1,44 @@
 describe 'AutocompleteSnippets', ->
-  [completionDelay, editor, editorView, snippetsMain, autocompleteMain, autocompleteManager] = []
+  [completionDelay, editor, editorView] = []
 
   beforeEach ->
-    runs ->
-      # Set to live completion
-      atom.config.set('autocomplete-plus.enableAutoActivation', true)
-      # Set the completion delay
-      completionDelay = 100
-      atom.config.set('autocomplete-plus.autoActivationDelay', completionDelay)
-      completionDelay += 100 # Rendering delay
-      workspaceElement = atom.views.getView(atom.workspace)
-      jasmine.attachToDOM(workspaceElement)
+    atom.config.set('autocomplete-plus.enableAutoActivation', true)
+    completionDelay = 100
+    atom.config.set('autocomplete-plus.autoActivationDelay', completionDelay)
+    completionDelay += 100 # Rendering delay
 
-      autocompleteMain = atom.packages.loadPackage('autocomplete-plus').mainModule
-      spyOn(autocompleteMain, 'consumeProvider').andCallThrough()
-      snippetsMain = atom.packages.loadPackage('autocomplete-snippets').mainModule
-      spyOn(snippetsMain, 'provide').andCallThrough()
+    workspaceElement = atom.views.getView(atom.workspace)
+    jasmine.attachToDOM(workspaceElement)
 
-    waitsForPromise ->
-      atom.workspace.open('sample.js').then (e) ->
-        editor = e
-        editorView = atom.views.getView(editor)
+    snippetsMainModule = null
+    autocompleteManager = null
 
     waitsForPromise ->
       Promise.all [
+        atom.workspace.open('sample.js').then (e) ->
+          editor = e
+          editorView = atom.views.getView(editor)
+
         atom.packages.activatePackage('language-javascript')
-        atom.packages.activatePackage('autocomplete-plus')
+
         atom.packages.activatePackage('autocomplete-snippets')
+
+        atom.packages.activatePackage('autocomplete-plus').then (pack) ->
+          autocompleteManager = pack.mainModule.getAutocompleteManager()
+
+        atom.packages.activatePackage('snippets').then ({mainModule}) ->
+          snippetsMainModule = mainModule
+          snippetsMainModule.loaded = false
       ]
 
-    waitsFor ->
-      autocompleteMain.autocompleteManager?.ready and
-        snippetsMain.provide.calls.length is 1 and
-        autocompleteMain.consumeProvider.calls.length is 1
-
-    runs ->
-      autocompleteManager = autocompleteMain.autocompleteManager
-      spyOn(autocompleteManager, 'findSuggestions').andCallThrough()
-      spyOn(autocompleteManager, 'displaySuggestions').andCallThrough()
-
-  activateSnippetsPackage = ->
-    module = null
-    runs ->
-      module = null
-
-    waitsForPromise ->
-      atom.packages.activatePackage('snippets').then ({mainModule}) ->
-        module = mainModule
-        module.loaded = false
+    waitsFor 'snippets provider to be registered', 1000, ->
+      autocompleteManager?.providerManager.providers.length > 0
 
     waitsFor 'all snippets to load', 3000, ->
-      module.loaded
+      snippetsMainModule.loaded
 
   describe 'when autocomplete-plus is enabled', ->
     it 'shows autocompletions when there are snippets available', ->
-      activateSnippetsPackage()
-
       runs ->
         expect(editorView.querySelector('.autocomplete-plus')).not.toExist()
 
@@ -65,17 +48,14 @@ describe 'AutocompleteSnippets', ->
 
         advanceClock(completionDelay)
 
-      waitsFor ->
-        autocompleteManager.displaySuggestions.calls.length is 1
+      waitsFor 'autocomplete view to appear', 1000, ->
+        editorView.querySelector('.autocomplete-plus span.word')
 
       runs ->
-        expect(editorView.querySelector('.autocomplete-plus')).toExist()
         expect(editorView.querySelector('.autocomplete-plus span.word')).toHaveText('do')
         expect(editorView.querySelector('.autocomplete-plus span.right-label')).toHaveText('do')
 
     it "expands the snippet on confirm", ->
-      activateSnippetsPackage()
-
       runs ->
         expect(editorView.querySelector('.autocomplete-plus')).not.toExist()
 
@@ -85,11 +65,8 @@ describe 'AutocompleteSnippets', ->
 
         advanceClock(completionDelay)
 
-      waitsFor ->
-        autocompleteManager.displaySuggestions.calls.length is 1
-
-      runs ->
-        expect(editorView.querySelector('.autocomplete-plus')).toExist()
+      waitsFor 'autocomplete view to appear', 1000, ->
+        editorView.querySelector('.autocomplete-plus')
 
       runs ->
         atom.commands.dispatch(editorView, 'autocomplete-plus:confirm')
