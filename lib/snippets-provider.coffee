@@ -43,7 +43,8 @@ class SnippetsProvider
   onDidInsertSuggestion: ({editor}) ->
     atom.commands.dispatch(atom.views.getView(editor), 'snippets:expand')
 
-ascendingPrefixComparator = (a, b) -> a.prefix  - b.prefix
+ascendingPrefixComparator = (a, b) ->
+  if a.prefix > b.prefix then 1 else if a.prefix < b.prefix then -1 else 0
 
 firstCharsEqual = (str1, str2) ->
   str1[0].toLowerCase() is str2[0].toLowerCase()
