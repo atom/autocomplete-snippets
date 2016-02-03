@@ -43,7 +43,6 @@ class SnippetsProvider
   onDidInsertSuggestion: ({editor}) ->
     atom.commands.dispatch(atom.views.getView(editor), 'snippets:expand')
 
-
 ascendingPrefixComparator = (a, b) -> a.text.localeCompare(b.text)
 
 firstCharsEqual = (str1, str2) ->
