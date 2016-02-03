@@ -44,9 +44,7 @@ class SnippetsProvider
     atom.commands.dispatch(atom.views.getView(editor), 'snippets:expand')
 
 
-# To the choice of reviewer
-ascendingPrefixComparator = (a, b) -> if a.text > b.text then 1 else if a.text < b.text then -1 else 0
-#ascendingPrefixComparator = (a, b) -> a.text.localeCompare(b.text)
+ascendingPrefixComparator = (a, b) -> a.text.localeCompare(b.text)
 
 firstCharsEqual = (str1, str2) ->
   str1[0].toLowerCase() is str2[0].toLowerCase()
