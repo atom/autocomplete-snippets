@@ -71,3 +71,27 @@ describe 'AutocompleteSnippets', ->
       runs ->
         atom.commands.dispatch(editorView, 'autocomplete-plus:confirm')
         expect(editor.getText()).toContain '} while (true);'
+
+
+  describe 'when showing suggestions', ->
+    it 'sort them in alphabetical order', ->
+
+      unorderedPrefix = [
+        "",
+        "dop",
+        "do",
+        "dad",
+        "d"
+      ]
+
+      snippets = {}
+      snippets[x] = {prefix: x, name:"", description:"", descriptionMoreURL:""} for x in unorderedPrefix
+
+      SnippetsProvider = require('../lib/snippets-provider')
+      sp = new SnippetsProvider()
+      sp.setSnippetsSource( { snippetsForScopes: (scope) -> snippets } )
+      suggestions = sp.getSuggestions( {scopeDescriptor:"*", prefix:"d"} )
+
+      suggestionsText = suggestions.map( (x) -> x.text )
+      expect(suggestionsText).toEqual(["d", "dad", "do", "dop"])
+
