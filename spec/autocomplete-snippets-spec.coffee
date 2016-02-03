@@ -85,13 +85,13 @@ describe 'AutocompleteSnippets', ->
       ]
 
       snippets = {}
-      snippets[x] = {prefix: x, name:"", description:"", descriptionMoreURL:""} for x in unorderedPrefix
+      snippets[x] = {prefix: x, name: "", description: "", descriptionMoreURL: ""} for x in unorderedPrefix
 
       SnippetsProvider = require('../lib/snippets-provider')
       sp = new SnippetsProvider()
-      sp.setSnippetsSource( { snippetsForScopes: (scope) -> snippets } )
-      suggestions = sp.getSuggestions( {scopeDescriptor:"*", prefix:"d"} )
+      sp.setSnippetsSource({snippetsForScopes: (scope) -> snippets})
+      suggestions = sp.getSuggestions({scopeDescriptor: "*", prefix: "d"})
 
-      suggestionsText = suggestions.map( (x) -> x.text )
+      suggestionsText = suggestions.map((x) -> x.text)
       expect(suggestionsText).toEqual(["d", "dad", "do", "dop"])
 
