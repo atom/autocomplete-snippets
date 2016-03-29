@@ -34,6 +34,9 @@ class SnippetsProvider
         text: snippet.prefix
         replacementPrefix: prefix
         rightLabel: snippet.name
+        rightLabelHTML: snippet.rightLabelHTML
+        leftLabel: snippet.leftLabel
+        leftLabelHTML: snippet.leftLabelHTML
         description: snippet.description
         descriptionMoreURL: snippet.descriptionMoreURL
 
