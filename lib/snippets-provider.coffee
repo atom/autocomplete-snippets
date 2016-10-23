@@ -1,7 +1,7 @@
 module.exports =
 class SnippetsProvider
   selector: '*'
-  disableForSelector: '.comment, .string'
+  disableForSelector: atom.config.get ('autocomplete-snippets.disableForSelector')
   inclusionPriority: 1
   suggestionPriority: 2
 
