@@ -10,6 +10,7 @@ describe 'AutocompleteSnippets', ->
     workspaceElement = atom.views.getView(atom.workspace)
     jasmine.attachToDOM(workspaceElement)
 
+    autocompleteSnippetsMainModule = null
     snippetsMainModule = null
     autocompleteManager = null
 
@@ -20,19 +21,17 @@ describe 'AutocompleteSnippets', ->
           editorView = atom.views.getView(editor)
 
         atom.packages.activatePackage('language-javascript')
+        atom.packages.activatePackage('autocomplete-snippets').then ({mainModule}) ->
+          autocompleteSnippetsMainModule = mainModule
 
-        atom.packages.activatePackage('autocomplete-snippets')
-
-        atom.packages.activatePackage('autocomplete-plus').then (pack) ->
-          autocompleteManager = pack.mainModule.getAutocompleteManager()
-
+        atom.packages.activatePackage('autocomplete-plus')
         atom.packages.activatePackage('snippets').then ({mainModule}) ->
           snippetsMainModule = mainModule
           snippetsMainModule.loaded = false
       ]
 
     waitsFor 'snippets provider to be registered', 1000, ->
-      autocompleteManager?.providerManager.providers.length > 0
+      autocompleteSnippetsMainModule.provider?
 
     waitsFor 'all snippets to load', 3000, ->
       snippetsMainModule.loaded
