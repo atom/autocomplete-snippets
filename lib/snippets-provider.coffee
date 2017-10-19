@@ -8,7 +8,7 @@ class SnippetsProvider
   filterSuggestions: true
 
   constructor: ->
-    @showIcon = atom.config.get('autocomplete-plus.defaultProvider') is 'Symbol'
+    @showIcon = ['Symbol', 'Subsequence'].includes(atom.config.get('autocomplete-plus.defaultProvider'))
     @snippetsSource =
       snippetsForScopes: (scopeDescriptor) ->
         atom.config.get('snippets', {scope: scopeDescriptor})
