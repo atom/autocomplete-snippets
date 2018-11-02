@@ -105,7 +105,7 @@ describe('AutocompleteSnippets', () => {
   )
 
   describe('when observing package config settings', () =>
-    let sp
+    let sp = null
 
     beforeEach(() => {
       const SnippetsProvider = require('../lib/snippets-provider')
