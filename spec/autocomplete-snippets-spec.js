@@ -104,7 +104,7 @@ describe('AutocompleteSnippets', () => {
     })
   )
 
-  describe('when observing package config settings', () =>
+  describe('when observing package config settings', () => {
     let sp = null
 
     beforeEach(() => {
@@ -125,7 +125,7 @@ describe('AutocompleteSnippets', () => {
       expect(sp.inclusionPriority).toEqual(expectedInclusionPriority);
 
       atom.config.set('autocomplete-snippets.suggestionPriority', expectedSuggestionPriority)
-      expect(sp.suggestionPriority).toEqual(2);
+      expect(sp.suggestionPriority).toEqual(expectedSuggestionPriority);
     })
-  )
+  })
 })
