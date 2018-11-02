@@ -103,4 +103,29 @@ describe('AutocompleteSnippets', () => {
       expect(suggestionsText).toEqual(["d", "dad", "do", "dop"])
     })
   )
+
+  describe('when observing package config settings', () =>
+    let sp
+
+    beforeEach(() => {
+      const SnippetsProvider = require('../lib/snippets-provider')
+      sp = new SnippetsProvider();
+    })
+
+    it('uses default inclusionPriority and suggestionPriority values', () => {
+      expect(sp.inclusionPriority).toEqual(1);
+      expect(sp.suggestionPriority).toEqual(2);
+    })
+
+    it('updates inclusionPriority and suggestionPriority values when the config has changed', () => {
+      const expectedInclusionPriority = 5;
+      const expectedSuggestionPriority = 10;
+
+      atom.config.set('autocomplete-snippets.inclusionPriority', expectedInclusionPriority)
+      expect(sp.inclusionPriority).toEqual(expectedInclusionPriority);
+
+      atom.config.set('autocomplete-snippets.suggestionPriority', expectedSuggestionPriority)
+      expect(sp.suggestionPriority).toEqual(2);
+    })
+  )
 })
