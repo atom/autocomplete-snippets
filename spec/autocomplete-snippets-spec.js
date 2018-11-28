@@ -94,6 +94,7 @@ describe('AutocompleteSnippets', () => {
 
       const SnippetsProvider = require('../lib/snippets-provider')
       const sp = new SnippetsProvider()
+      sp.minPrefixLength = 1
       sp.setSnippetsSource({snippetsForScopes(scope) {
         return snippets
       }})
