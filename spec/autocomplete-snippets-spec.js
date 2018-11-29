@@ -75,6 +75,30 @@ describe('AutocompleteSnippets', () => {
         expect(editor.getText()).toContain('} while (true)')
       })
     })
+
+    describe('when picking minimum prefix length', () => {
+      it('respects the value set for autocomplete-plus', () => {
+        const plus = atom.config.get('autocomplete-plus.minimumWordLength')
+        atom.config.set('autocomplete-snippets.minimumWordLength', plus + 1)
+
+        const SnippetsProvider = require('../lib/snippets-provider')
+        const usedVal = (new SnippetsProvider()).minPrefixLength
+
+        expect(usedVal === plus)
+      })
+
+      it('can be overridden by its own setting', () => {
+        const plus = atom.config.get('autocomplete-plus.minimumWordLength')
+        atom.config.set('autocomplete-snippets.minimumWordLength', plus + 1)
+        const snippet = atom.config.get('autocomplete-snippets.minimumWordLength')
+        atom.config.set('autocomplete-snippets.useAutocompletePlusMinimumWordLength', false)
+
+        const SnippetsProvider = require('../lib/snippets-provider')
+        const usedVal = (new SnippetsProvider()).minPrefixLength
+
+        expect(usedVal === snippet)
+      })
+    })
   })
 
   describe('when showing suggestions', () =>
