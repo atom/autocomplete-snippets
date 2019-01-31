@@ -72,6 +72,13 @@ describe('AutocompleteSnippets', () => {
 
       runs(() => {
         atom.commands.dispatch(editorView, 'autocomplete-plus:confirm')
+
+        let start = Date.now()
+        let now = start
+        while (now - start < 100) {
+          now = Date.now()
+        }
+
         expect(editor.getText()).toContain('} while (true)')
       })
     })
