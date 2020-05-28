@@ -69,9 +69,13 @@ describe('AutocompleteSnippets', () => {
       })
 
       waitsFor('autocomplete view to appear', 1000, () => editorView.querySelector('.autocomplete-plus'))
+      console.log(1)
+      console.log(editor.getText())
 
       runs(() => {
         atom.commands.dispatch(editorView, 'autocomplete-plus:confirm')
+        console.log(2)
+        console.log(editor.getText())
         expect(editor.getText()).toContain('} while (true)')
       })
     })
