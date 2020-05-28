@@ -73,6 +73,10 @@ describe('AutocompleteSnippets', () => {
       runs(() => {
         atom.commands.dispatch(editorView, 'autocomplete-plus:confirm')
         console.log(2)
+        atom.packages.isPackageActive('autocomplete-plus')
+        atom.packages.isPackageActive('language-javascript')
+        atom.packages.isPackageActive('autocomplete-snippets')
+        atom.packages.isPackageActive('snippets')
         console.log(editor.getText())
         console.log(2)
         expect(editor.getText()).toContain('} while (true)')
