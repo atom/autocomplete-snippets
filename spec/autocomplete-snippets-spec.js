@@ -32,9 +32,9 @@ describe('AutocompleteSnippets', () => {
       ])
     )
 
-    waitsFor('snippets provider to be registered', 1000, () => autocompleteSnippetsMainModule.provider != null)
+    waitsFor('snippets provider to be registered', 5000, () => autocompleteSnippetsMainModule.provider != null)
 
-    waitsFor('all snippets to load', 3000, () => snippetsMainModule.loaded)
+    waitsFor('all snippets to load', 5000, () => snippetsMainModule.loaded)
   })
 
   describe('when autocomplete-plus is enabled', () => {
@@ -68,7 +68,7 @@ describe('AutocompleteSnippets', () => {
         advanceClock(completionDelay)
       })
 
-      waitsFor('autocomplete view to appear', 1000, () => editorView.querySelector('.autocomplete-plus'))
+      waitsFor('autocomplete view to appear', 5000, () => editorView.querySelector('.autocomplete-plus'))
 
       runs(() => {
         atom.commands.dispatch(editorView, 'autocomplete-plus:confirm')
