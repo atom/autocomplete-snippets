@@ -52,6 +52,7 @@ describe('AutocompleteSnippets', () => {
       waitsFor('autocomplete view to appear', 1000, () => editorView.querySelector('.autocomplete-plus span.word'))
 
       runs(() => {
+        console.log(editor.getText())
         expect(editorView.querySelector('.autocomplete-plus span.word')).toHaveText('do')
         expect(editorView.querySelector('.autocomplete-plus span.right-label')).toHaveText('do')
       })
@@ -79,6 +80,7 @@ describe('AutocompleteSnippets', () => {
         console.log(atom.packages.isPackageActive('snippets'))
         console.log(editor.getText())
         console.log(2)
+        expect(editorView.querySelector('.autocomplete-plus')).toExist()
         expect(editor.getText()).toContain('} while (true)')
       })
     })
