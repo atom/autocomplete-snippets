@@ -32,9 +32,9 @@ describe('AutocompleteSnippets', () => {
       ])
     )
 
-    waitsFor('snippets provider to be registered', 5000, () => autocompleteSnippetsMainModule.provider != null)
+    waitsFor('snippets provider to be registered', 1000, () => autocompleteSnippetsMainModule.provider != null)
 
-    waitsFor('all snippets to load', 5000, () => snippetsMainModule.loaded)
+    waitsFor('all snippets to load', 3000, () => snippetsMainModule.loaded)
   })
 
   describe('when autocomplete-plus is enabled', () => {
@@ -52,7 +52,6 @@ describe('AutocompleteSnippets', () => {
       waitsFor('autocomplete view to appear', 1000, () => editorView.querySelector('.autocomplete-plus span.word'))
 
       runs(() => {
-        console.log(editor.getText())
         expect(editorView.querySelector('.autocomplete-plus span.word')).toHaveText('do')
         expect(editorView.querySelector('.autocomplete-plus span.right-label')).toHaveText('do')
       })
@@ -69,18 +68,10 @@ describe('AutocompleteSnippets', () => {
         advanceClock(completionDelay)
       })
 
-      waitsFor('autocomplete view to appear', 5000, () => editorView.querySelector('.autocomplete-plus span.word'))
+      waitsFor('autocomplete view to appear', 1000, () => editorView.querySelector('.autocomplete-plus span.word'))
 
       runs(() => {
         atom.commands.dispatch(editorView, 'autocomplete-plus:confirm')
-        console.log(2)
-        console.log(atom.packages.isPackageActive('autocomplete-plus'))
-        console.log(atom.packages.isPackageActive('language-javascript'))
-        console.log(atom.packages.isPackageActive('autocomplete-snippets'))
-        console.log(atom.packages.isPackageActive('snippets'))
-        console.log(editor.getText())
-        console.log(2)
-        expect(editorView.querySelector('.autocomplete-plus')).toExist()
         expect(editor.getText()).toContain('} while (true)')
       })
     })
