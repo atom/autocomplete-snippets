@@ -2,6 +2,9 @@ describe('AutocompleteSnippets', () => {
   let [completionDelay, editor, editorView] = []
 
   beforeEach(() => {
+    atom.config.set('autocomplete-snippets.minimumWordLength', 1)
+    atom.config.set('autocomplete-snippets.useAutocompletePlusMinimumWordLength', false)
+
     atom.config.set('autocomplete-plus.enableAutoActivation', true)
     completionDelay = 100
     atom.config.set('autocomplete-plus.autoActivationDelay', completionDelay)
@@ -49,6 +52,7 @@ describe('AutocompleteSnippets', () => {
         advanceClock(completionDelay)
       })
 
+
       waitsFor('autocomplete view to appear', 1000, () => editorView.querySelector('.autocomplete-plus span.word'))
 
       runs(() => {
@@ -75,6 +79,31 @@ describe('AutocompleteSnippets', () => {
         expect(editor.getText()).toContain('} while (true)')
       })
     })
+
+    describe('when picking minimum prefix length', () => {
+      it('respects the value set for autocomplete-plus', () => {
+        atom.config.set('autocomplete-snippets.useAutocompletePlusMinimumWordLength', true)
+
+        const plus = atom.config.get('autocomplete-plus.minimumWordLength')
+
+        const SnippetsProvider = require('../lib/snippets-provider')
+        const usedVal = (new SnippetsProvider()).minPrefixLength
+
+        expect(usedVal).toEqual(plus)
+      })
+
+      it('can be overridden by its own setting', () => {
+        atom.config.set('autocomplete-snippets.useAutocompletePlusMinimumWordLength', false)
+        const plus = atom.config.get('autocomplete-plus.minimumWordLength')
+        atom.config.set('autocomplete-snippets.minimumWordLength', plus + 1)
+        const snippet = atom.config.get('autocomplete-snippets.minimumWordLength')
+
+        const SnippetsProvider = require('../lib/snippets-provider')
+        const usedVal = (new SnippetsProvider()).minPrefixLength
+
+        expect(usedVal).toEqual(snippet)
+      })
+    })
   })
 
   describe('when showing suggestions', () =>
@@ -94,6 +123,7 @@ describe('AutocompleteSnippets', () => {
 
       const SnippetsProvider = require('../lib/snippets-provider')
       const sp = new SnippetsProvider()
+      sp.minPrefixLength = 1
       sp.setSnippetsSource({snippetsForScopes(scope) {
         return snippets
       }})
