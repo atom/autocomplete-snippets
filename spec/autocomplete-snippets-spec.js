@@ -110,6 +110,7 @@ describe('AutocompleteSnippets', () => {
     beforeEach(() => {
       const SnippetsProvider = require('../lib/snippets-provider')
       sp = new SnippetsProvider();
+      sp.initialize();
     })
 
     it('uses default inclusionPriority and suggestionPriority values', () => {
