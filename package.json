@@ -25,5 +25,21 @@
         "0.1.0": "consumeSnippets"
       }
     }
+  },
+  "configSchema": {
+    "inclusionPriority": {
+      "title": "Inclusion Priority",
+      "description": "Increasing this setting makes snippets more likely to appear in the autocomplete menu.",
+      "type": "integer",
+      "default": 1,
+      "minimum": 0
+    },
+    "suggestionPriority": {
+      "title": "Suggestion Priority",
+      "description": "Increasing this setting makes snippets appear higher in the autocomplete menu.",
+      "type": "integer",
+      "default": 2,
+      "minimum": 0
+    }
   }
 }
