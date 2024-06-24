@@ -25,5 +25,19 @@
         "0.1.0": "consumeSnippets"
       }
     }
+  },
+  "configSchema": {
+    "useAutocompletePlusMinimumWordLength": {
+      "description": "When enabled, the minimum prefix length will be that set for autocomplete-plus",
+      "type": "boolean",
+      "default": true,
+      "order": 1
+    },
+    "minimumWordLength": {
+      "description": "Minimum prefix length when not using the one set for autocomplete-plus",
+      "type": "integer",
+      "default": 3,
+      "order": 2
+    }
   }
 }
